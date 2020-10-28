@@ -115,3 +115,7 @@ class TppWebioricoLandingPage(BaseLandingPageView):
 
 class TppWebioricoThankYouPage(BaseThankYouView):
     pass
+
+
+class ImersaoDjangoLessonPage(BaseThankYouView):
+    pass

@@ -55,4 +55,9 @@ urlpatterns = [
         views.TppWebioricoThankYouPage.as_view(),
         name='tpp_webiorico_thank_you_page'
     ),
+    path(
+        'imersao-django/aula-<int:lesson>',
+        views.ImersaoDjangoLessonPage.as_view(),
+        name='imersao_django_lesson_page'
+    ),
 ]
