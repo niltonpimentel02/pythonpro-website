@@ -4,6 +4,7 @@ from inflection import underscore
 from django.views.generic import FormView, TemplateView
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.shortcuts import Http404
 
 from pythonpro.cohorts.facade import find_most_recent_cohort
 from pythonpro.pages.forms import NameEmailForm, NameEmailPhoneForm
@@ -118,4 +119,52 @@ class TppWebioricoThankYouPage(BaseThankYouView):
 
 
 class ImersaoDjangoLessonPage(BaseThankYouView):
-    pass
+
+    @classmethod
+    def get_video_informations(cls, lesson_number):
+        VIDEOS = {
+            1: {
+                'title': 'Publique seu sistema Django em menos de 30 minutos',
+                'id': 'zLIeu9cPYrY',
+            },
+            2: {
+                'title': 'O método para publicar seu sistema Django automaticamente e do jeito certo',
+                'id': 'wj4Qj73Mz7I',
+            },
+            3: {
+                'title': 'Criando uma aplicação real em Django',
+                'id': 'DuvzyZcqVLs',
+            },
+            4: {
+                'title': 'Como armazenar informações no banco de dados?',
+                'id': 'PFcLhw3bucA',
+            },
+            5: {
+                'title': 'O jeito mais fácil de listar todos os dados do banco',
+                'id': 'HmAAZj4vLOE',
+            },
+            6: {
+                'title': 'Alterando os dados no banco de dados',
+                'id': '8HoZbj8j-ZU',
+            },
+            7: {
+                'title': 'Como eu excluo as informações do banco de dados?',
+                'id': 'gCQPwv_3w8o',
+            },
+        }
+
+        output = VIDEOS.get(lesson_number)
+        if output is not None:
+            output['number'] = lesson_number
+            return output
+
+    def get_context_data(self, *args, **kwargs):
+        data = super().get_context_data(*args, **kwargs)
+        data['video'] = ImersaoDjangoLessonPage.get_video_informations(self.kwargs['lesson'])
+        data['next_video'] = ImersaoDjangoLessonPage.get_video_informations(self.kwargs['lesson'] + 1)
+        data['previous_video'] = ImersaoDjangoLessonPage.get_video_informations(self.kwargs['lesson'] - 1)
+
+        if data['video'] is None:
+            raise Http404
+
+        return data

@@ -12,8 +12,8 @@
                     <img width='160px' src="{% static 'img/imersao-django/logo.png' %}" alt='Imersão Django: Os Primeiros Passos da CARREIRA À PROVA DE CRISE'>
                 </div>
                 <div class='col-10 text'>
-                    <h2 class="lead font-weight-bold text-uppercase">PASSO 1</h2>
-                    <h1 class="">Publique seu sistema Django em menos de 30 minutos!</h1>
+                    <h2 class="lead font-weight-bold text-uppercase">PASSO {{ video.number }}</h2>
+                    <h1 class="">{{ video.title }}</h1>
                 </div>
             </div>
         </div>
@@ -23,15 +23,17 @@
         <div class="container">
             <div class="row">
                 <div class='col'>
-                    <iframe width="1110px" height="625px" src="https://www.youtube.com/embed/9SUVYuPK2f4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="1110px" height="625px" src="https://www.youtube.com/embed/{{ video.id }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
             
             <div class="row mt-3">
                 <div class='col-6 text-left'>
-                    <a href="#" class='btn btn-primary text-uppercase font-weight-bold mr-3'>
-                        &larr;
-                    </a>
+                    {% if previous_video %}
+                        <a href="{% url 'pages:imersao_django_lesson_page' previous_video.number %}" class='btn btn-primary text-uppercase font-weight-bold mr-3'>
+                            &larr;
+                        </a>
+                    {% endif %}
                     <a href="https://www.instagram.com/renzoprobr/" target="_blank" class='btn btn-secondary text-uppercase font-weight-bold' style='background-color: #845EC2; border-color: #845EC2' data-toggle="tooltip" title="Clique aqui para me Seguir no Instagram">
                         <i data-feather="instagram"></i>
                     </a>
@@ -43,9 +45,11 @@
                     </a>
                 </div>
                 <div class='col-6 text-right'>
-                    <a href="#" class='btn btn-lg btn-primary text-uppercase font-weight-bold'>
-                        Assistir o Próximo Passo &rarr;
-                    </a>
+                    {% if next_video %}
+                        <a href="{% url 'pages:imersao_django_lesson_page' next_video.number %}" class='btn btn-lg btn-primary text-uppercase font-weight-bold'>
+                            Assistir o Próximo Passo &rarr;
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
